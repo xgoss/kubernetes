@@ -44,7 +44,6 @@ import (
 	ipallocator "k8s.io/kubernetes/pkg/registry/service/ipallocator"
 	"k8s.io/kubernetes/pkg/runtime"
 	"k8s.io/kubernetes/pkg/storage"
-	"k8s.io/kubernetes/pkg/ui"
 	"k8s.io/kubernetes/pkg/util"
 	"k8s.io/kubernetes/pkg/util/crypto"
 	utilnet "k8s.io/kubernetes/pkg/util/net"
@@ -548,9 +547,9 @@ func (s *GenericAPIServer) init(c *Config) {
 	if c.EnableLogsSupport {
 		apiserver.InstallLogsSupport(s.MuxHelper)
 	}
-	if c.EnableUISupport {
-		ui.InstallSupport(s.MuxHelper, s.enableSwaggerSupport && s.enableSwaggerUI)
-	}
+	// if c.EnableUISupport {
+	// 	ui.InstallSupport(s.MuxHelper, s.enableSwaggerSupport && s.enableSwaggerUI)
+	// }
 
 	if c.EnableProfiling {
 		s.mux.HandleFunc("/debug/pprof/", pprof.Index)
