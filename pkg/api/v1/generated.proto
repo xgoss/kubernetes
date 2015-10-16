@@ -614,6 +614,16 @@ message DeleteOptions {
   optional bool orphanDependents = 3;
 }
 
+// DeprecatedDownwardAPIVolumeFile represents information to create the file containing the pod field
+// This type is deprecated and should be replaced by use of the downwardAPI volume source.
+message DeprecatedDownwardAPIVolumeFile {
+}
+
+// DeprecatedDownwardAPIVolumeSource represents a volume containing downward API info.
+// This type is deprecated and should be replaced by use of the downwardAPI volume source.
+message DeprecatedDownwardAPIVolumeSource {
+}
+
 // DownwardAPIVolumeFile represents information to create the file containing the pod field
 message DownwardAPIVolumeFile {
   // Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'

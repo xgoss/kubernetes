@@ -190,6 +190,15 @@ func SetObjectDefaults_Pod(in *Pod) {
 		if a.VolumeSource.AzureDisk != nil {
 			SetDefaults_AzureDiskVolumeSource(a.VolumeSource.AzureDisk)
 		}
+		if a.VolumeSource.Metadata != nil {
+			SetDefaults_DeprecatedDownwardAPIVolumeSource(a.VolumeSource.Metadata)
+			for j := range a.VolumeSource.Metadata.Items {
+				b := &a.VolumeSource.Metadata.Items[j]
+				if b.FieldRef != nil {
+					SetDefaults_ObjectFieldSelector(b.FieldRef)
+				}
+			}
+		}
 	}
 	for i := range in.Spec.InitContainers {
 		a := &in.Spec.InitContainers[i]
@@ -321,6 +330,15 @@ func SetObjectDefaults_PodTemplate(in *PodTemplate) {
 		if a.VolumeSource.AzureDisk != nil {
 			SetDefaults_AzureDiskVolumeSource(a.VolumeSource.AzureDisk)
 		}
+		if a.VolumeSource.Metadata != nil {
+			SetDefaults_DeprecatedDownwardAPIVolumeSource(a.VolumeSource.Metadata)
+			for j := range a.VolumeSource.Metadata.Items {
+				b := &a.VolumeSource.Metadata.Items[j]
+				if b.FieldRef != nil {
+					SetDefaults_ObjectFieldSelector(b.FieldRef)
+				}
+			}
+		}
 	}
 	for i := range in.Template.Spec.InitContainers {
 		a := &in.Template.Spec.InitContainers[i]
@@ -445,6 +463,15 @@ func SetObjectDefaults_ReplicationController(in *ReplicationController) {
 			}
 			if a.VolumeSource.AzureDisk != nil {
 				SetDefaults_AzureDiskVolumeSource(a.VolumeSource.AzureDisk)
+			}
+			if a.VolumeSource.Metadata != nil {
+				SetDefaults_DeprecatedDownwardAPIVolumeSource(a.VolumeSource.Metadata)
+				for j := range a.VolumeSource.Metadata.Items {
+					b := &a.VolumeSource.Metadata.Items[j]
+					if b.FieldRef != nil {
+						SetDefaults_ObjectFieldSelector(b.FieldRef)
+					}
+				}
 			}
 		}
 		for i := range in.Spec.Template.Spec.InitContainers {
