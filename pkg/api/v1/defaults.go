@@ -248,6 +248,9 @@ func addDefaultingFuncs(scheme *runtime.Scheme) {
 				obj.Data = make(map[string]string)
 			}
 		},
+		func(obj *SecurityContextConstraints) {
+			defaultSecurityContextConstraints(obj)
+		},
 	)
 }
 
@@ -259,5 +262,22 @@ func defaultHostNetworkPorts(containers *[]Container) {
 				(*containers)[i].Ports[j].HostPort = (*containers)[i].Ports[j].ContainerPort
 			}
 		}
+	}
+}
+
+// Default SCCs for new fields.  FSGroup and SupplementalGroups are
+// set to the RunAsAny strategy if they are unset on the scc.
+func defaultSecurityContextConstraints(scc *SecurityContextConstraints) {
+	if len(scc.FSGroup.Type) == 0 {
+		scc.FSGroup.Type = FSGroupStrategyRunAsAny
+	}
+	if len(scc.SupplementalGroups.Type) == 0 {
+		scc.SupplementalGroups.Type = SupplementalGroupsStrategyRunAsAny
+	}
+
+	// EmptyDir volumes were implicitly allowed originally, always default this to true.
+	if scc.AllowEmptyDirVolumePlugin == nil {
+		scc.AllowEmptyDirVolumePlugin = new(bool)
+		*scc.AllowEmptyDirVolumePlugin = true
 	}
 }

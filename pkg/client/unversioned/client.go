@@ -43,6 +43,8 @@ type Interface interface {
 	ConfigMapsNamespacer
 	Extensions() ExtensionsInterface
 	Discovery() DiscoveryInterface
+
+	SecurityContextConstraintsInterface
 }
 
 func (c *Client) ReplicationControllers(namespace string) ReplicationControllerInterface {
@@ -51,6 +53,10 @@ func (c *Client) ReplicationControllers(namespace string) ReplicationControllerI
 
 func (c *Client) Nodes() NodeInterface {
 	return newNodes(c)
+}
+
+func (c *Client) SecurityContextConstraints() SecurityContextConstraintInterface {
+	return newSecurityContextConstraints(c)
 }
 
 func (c *Client) Events(namespace string) EventInterface {
