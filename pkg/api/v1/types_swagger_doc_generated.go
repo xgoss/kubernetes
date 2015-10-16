@@ -700,6 +700,25 @@ func (LocalObjectReference) SwaggerDoc() map[string]string {
 	return map_LocalObjectReference
 }
 
+var map_MetadataFile = map[string]string{
+	"":         "MetadataFile expresses information about a file holding pod metadata. NOTE: Deprecated in favor of DownwardAPIVolumeFile",
+	"name":     "Required: Name is the name of the file",
+	"fieldRef": "Required: Selects a field of the pod: only annotations, labels, name and namespace are supported.",
+}
+
+func (MetadataFile) SwaggerDoc() map[string]string {
+	return map_MetadataFile
+}
+
+var map_MetadataVolumeSource = map[string]string{
+	"":      "MetadataVolumeSource represents a volume containing metadata about a pod. NOTE: Deprecated in favor of DownwardAPIVolumeSource",
+	"items": "Items is a list of metadata file name",
+}
+
+func (MetadataVolumeSource) SwaggerDoc() map[string]string {
+	return map_MetadataVolumeSource
+}
+
 var map_NFSVolumeSource = map[string]string{
 	"":         "Represents an NFS mount that lasts the lifetime of a pod. NFS volumes do not support ownership management or SELinux relabeling.",
 	"server":   "Server is the hostname or IP address of the NFS server. More info: http://releases.k8s.io/HEAD/docs/user-guide/volumes.md#nfs",
@@ -1640,6 +1659,7 @@ var map_VolumeSource = map[string]string{
 	"downwardAPI": "DownwardAPI represents downward API about the pod that should populate this volume",
 	"fc":          "FC represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod.",
 	"azureFile":   "AzureFile represents an Azure File Service mount on the host and bind mount to the pod.",
+	"metadata":    "Metadata represents metadata about the pod that should populate this volume NOTE: Deprecated in favor of DownwardAPI",
 }
 
 func (VolumeSource) SwaggerDoc() map[string]string {
