@@ -100,6 +100,7 @@ var ShortForms = map[string]string{
 	"rc":     "replicationcontrollers",
 	"rs":     "replicasets",
 	"sa":     "serviceaccounts",
+	"scc":    "securitycontextconstraints",
 	"svc":    "services",
 }
 
