@@ -6751,10 +6751,6 @@ func autoConvert_v1_VolumeSource_To_api_VolumeSource(in *VolumeSource, out *api.
 	return nil
 }
 
-func Convert_v1_VolumeSource_To_api_VolumeSource(in *VolumeSource, out *api.VolumeSource, s conversion.Scope) error {
-	return autoConvert_v1_VolumeSource_To_api_VolumeSource(in, out, s)
-}
-
 func autoConvert_api_VolumeSource_To_v1_VolumeSource(in *api.VolumeSource, out *VolumeSource, s conversion.Scope) error {
 	if in.HostPath != nil {
 		in, out := &in.HostPath, &out.HostPath
@@ -6928,10 +6924,6 @@ func autoConvert_api_VolumeSource_To_v1_VolumeSource(in *api.VolumeSource, out *
 		out.ConfigMap = nil
 	}
 	return nil
-}
-
-func Convert_api_VolumeSource_To_v1_VolumeSource(in *api.VolumeSource, out *VolumeSource, s conversion.Scope) error {
-	return autoConvert_api_VolumeSource_To_v1_VolumeSource(in, out, s)
 }
 
 func autoConvert_v1_WeightedPodAffinityTerm_To_api_WeightedPodAffinityTerm(in *WeightedPodAffinityTerm, out *api.WeightedPodAffinityTerm, s conversion.Scope) error {

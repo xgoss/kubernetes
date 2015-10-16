@@ -1064,6 +1064,23 @@ message LocalObjectReference {
   optional string name = 1;
 }
 
+// MetadataFile expresses information about a file holding pod metadata.
+// NOTE: Deprecated in favor of DownwardAPIVolumeFile
+message MetadataFile {
+  // Name of the file to be created
+  optional string name = 1;
+
+  // Selects a field of the pod. Supported fields: metadata.annotations, metadata.labels, metadata.name, metadata.namespace
+  optional ObjectFieldSelector fieldRef = 2;
+}
+
+// MetadataVolumeSource represents a volume containing metadata about a pod.
+// NOTE: Deprecated in favor of DownwardAPIVolumeSource
+message MetadataVolumeSource {
+  // Items is a list of metadata file name
+  repeated MetadataFile items = 1;
+}
+
 // Represents an NFS mount that lasts the lifetime of a pod.
 // NFS volumes do not support ownership management or SELinux relabeling.
 message NFSVolumeSource {
@@ -2793,6 +2810,11 @@ message VolumeSource {
 
   // ConfigMap represents a configMap that should populate this volume
   optional ConfigMapVolumeSource configMap = 19;
+
+  // Metadata represents metadata about the pod that should populate this volume
+  // Deprecated: Use downwardAPI instead.
+  // +genconversion=false
+  optional MetadataVolumeSource metadata = 20;
 }
 
 // The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)

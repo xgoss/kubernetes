@@ -273,6 +273,11 @@ type VolumeSource struct {
 	AzureFile *AzureFileVolumeSource `json:"azureFile,omitempty" protobuf:"bytes,18,opt,name=azureFile"`
 	// ConfigMap represents a configMap that should populate this volume
 	ConfigMap *ConfigMapVolumeSource `json:"configMap,omitempty" protobuf:"bytes,19,opt,name=configMap"`
+
+	// Metadata represents metadata about the pod that should populate this volume
+	// Deprecated: Use downwardAPI instead.
+	// +genconversion=false
+	Metadata *MetadataVolumeSource `json:"metadata,omitempty" protobug:"bytes,20,opt,name=metadata" protobuf:"bytes,20,opt,name=metadata"`
 }
 
 // PersistentVolumeClaimVolumeSource references the user's PVC in the same namespace.
@@ -3048,6 +3053,22 @@ type ComponentStatusList struct {
 
 	// List of ComponentStatus objects.
 	Items []ComponentStatus `json:"items" protobuf:"bytes,2,rep,name=items"`
+}
+
+// MetadataVolumeSource represents a volume containing metadata about a pod.
+// NOTE: Deprecated in favor of DownwardAPIVolumeSource
+type MetadataVolumeSource struct {
+	// Items is a list of metadata file name
+	Items []MetadataFile `json:"items,omitempty" protobuf:"bytes,1,rep,name=items"`
+}
+
+// MetadataFile expresses information about a file holding pod metadata.
+// NOTE: Deprecated in favor of DownwardAPIVolumeFile
+type MetadataFile struct {
+	// Name of the file to be created
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
+	// Selects a field of the pod. Supported fields: metadata.annotations, metadata.labels, metadata.name, metadata.namespace
+	FieldRef ObjectFieldSelector `json:"fieldRef" protobuf:"bytes,2,opt,name=fieldRef"`
 }
 
 // DownwardAPIVolumeSource represents a volume containing downward API info.
