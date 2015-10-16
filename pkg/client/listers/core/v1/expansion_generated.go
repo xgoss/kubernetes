@@ -114,6 +114,10 @@ type SecretListerExpansion interface{}
 // SecretNamespaeLister.
 type SecretNamespaceListerExpansion interface{}
 
+// SecurityContextConstraintsListerExpansion allows custom methods to be added to
+// SecurityContextConstraintsLister.
+type SecurityContextConstraintsListerExpansion interface{}
+
 // ServiceListerExpansion allows custom methods to be added to
 // ServiceLister.
 type ServiceListerExpansion interface{}
