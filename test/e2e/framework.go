@@ -53,6 +53,9 @@ type Framework struct {
 	logsSizeWaitGroup    sync.WaitGroup
 	logsSizeCloseChannel chan bool
 	logsSizeVerifier     *LogsSizeVerifier
+
+	// Allows to override the initialization of the namespace
+	nsCreateFunc func(string, *client.Client, map[string]string) (*api.Namespace, error)
 }
 
 type TestDataSummary interface {
@@ -63,9 +66,16 @@ type TestDataSummary interface {
 // NewFramework makes a new framework and sets up a BeforeEach/AfterEach for
 // you (you can write additional before/after each functions).
 func NewFramework(baseName string) *Framework {
+	return InitializeFramework(baseName, createTestingNS)
+}
+
+// InitializeFramework initialize the framework by allowing to pass a custom
+// namespace creation function.
+func InitializeFramework(baseName string, nsCreateFunc func(string, *client.Client, map[string]string) (*api.Namespace, error)) *Framework {
 	f := &Framework{
 		BaseName:                 baseName,
 		addonResourceConstraints: make(map[string]resourceConstraint),
+		nsCreateFunc:             nsCreateFunc,
 	}
 
 	BeforeEach(f.beforeEach)
@@ -84,7 +94,7 @@ func (f *Framework) beforeEach() {
 	f.Clientset_1_2 = release_1_2.FromUnversionedClient(c)
 
 	By("Building a namespace api object")
-	namespace, err := createTestingNS(f.BaseName, f.Client, map[string]string{
+	namespace, err := f.nsCreateFunc(f.BaseName, f.Client, map[string]string{
 		"e2e-framework": f.BaseName,
 	})
 	Expect(err).NotTo(HaveOccurred())
