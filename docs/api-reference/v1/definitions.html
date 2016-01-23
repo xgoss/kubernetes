@@ -3836,6 +3836,13 @@ The resulting set of endpoints can be viewed as:<br>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DeprecatedHost is a request to schedule this pod onto a specific node</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">serviceAccountName</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ServiceAccountName is the name of the ServiceAccount to use to run this pod. More info: <a href="http://releases.k8s.io/HEAD/docs/design/service_accounts.md">http://releases.k8s.io/HEAD/docs/design/service_accounts.md</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
@@ -7523,6 +7530,13 @@ The resulting set of endpoints can be viewed as:<br>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">portalIP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DeprecatedPortalIP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">clusterIP</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ClusterIP is usually assigned by the master and is the IP address of the service. If specified, it will be allocated to the service if it is unused or else creation of the service will fail. Valid values are None, empty string (""), or a valid IP address. <em>None</em> can be specified for a headless service when proxying is not required. Cannot be updated. More info: <a href="http://releases.k8s.io/HEAD/docs/user-guide/services.md#virtual-ips-and-service-proxies">http://releases.k8s.io/HEAD/docs/user-guide/services.md#virtual-ips-and-service-proxies</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
@@ -7812,7 +7826,7 @@ The resulting set of endpoints can be viewed as:<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-12 00:11:20 UTC
+Last updated 2016-02-12 00:17:01 UTC
 </div>
 </div>
 </body>
