@@ -5790,6 +5790,7 @@ func autoConvert_v1_PodSpec_To_api_PodSpec(in *PodSpec, out *api.PodSpec, s conv
 	} else {
 		out.NodeSelector = nil
 	}
+	// in.DeprecatedHost has no peer in out
 	out.ServiceAccountName = in.ServiceAccountName
 	// in.DeprecatedServiceAccount has no peer in out
 	out.NodeName = in.NodeName
@@ -6658,6 +6659,7 @@ func autoConvert_v1_ServiceSpec_To_api_ServiceSpec(in *ServiceSpec, out *api.Ser
 	} else {
 		out.Selector = nil
 	}
+	// in.DeprecatedPortalIP has no peer in out
 	out.ClusterIP = in.ClusterIP
 	out.Type = api.ServiceType(in.Type)
 	if in.ExternalIPs != nil {
