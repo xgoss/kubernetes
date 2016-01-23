@@ -12525,7 +12525,7 @@
       "type": "v1.SecurityContextConstraintsList",
       "method": "GET",
       "summary": "list or watch objects of kind SecurityContextConstraints",
-      "nickname": "listNamespacedSecurityContextConstraints",
+      "nickname": "listSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12585,7 +12585,8 @@
       ],
       "produces": [
        "application/json",
-       "application/yaml"
+       "application/yaml",
+       "application/vnd.kubernetes.protobuf"
       ],
       "consumes": [
        "*/*"
@@ -12595,7 +12596,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "POST",
       "summary": "create a SecurityContextConstraints",
-      "nickname": "createNamespacedSecurityContextConstraints",
+      "nickname": "createSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12623,7 +12624,8 @@
       ],
       "produces": [
        "application/json",
-       "application/yaml"
+       "application/yaml",
+       "application/vnd.kubernetes.protobuf"
       ],
       "consumes": [
        "*/*"
@@ -12633,7 +12635,7 @@
       "type": "unversioned.Status",
       "method": "DELETE",
       "summary": "delete collection of SecurityContextConstraints",
-      "nickname": "deletecollectionNamespacedSecurityContextConstraints",
+      "nickname": "deletecollectionSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12693,7 +12695,8 @@
       ],
       "produces": [
        "application/json",
-       "application/yaml"
+       "application/yaml",
+       "application/vnd.kubernetes.protobuf"
       ],
       "consumes": [
        "*/*"
@@ -12706,10 +12709,10 @@
     "description": "API at /api/v1",
     "operations": [
      {
-      "type": "json.WatchEvent",
+      "type": "*versioned.Event",
       "method": "GET",
       "summary": "watch individual changes to a list of SecurityContextConstraints",
-      "nickname": "watchNamespacedSecurityContextConstraintsList",
+      "nickname": "watchSecurityContextConstraintsList",
       "parameters": [
        {
         "type": "string",
@@ -12764,11 +12767,14 @@
        {
         "code": 200,
         "message": "OK",
-        "responseModel": "json.WatchEvent"
+        "responseModel": "*versioned.Event"
        }
       ],
       "produces": [
-       "application/json"
+       "application/json",
+       "application/json;stream=watch",
+       "application/vnd.kubernetes.protobuf",
+       "application/vnd.kubernetes.protobuf;stream=watch"
       ],
       "consumes": [
        "*/*"
@@ -12784,7 +12790,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "GET",
       "summary": "read the specified SecurityContextConstraints",
-      "nickname": "readNamespacedSecurityContextConstraints",
+      "nickname": "readSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12828,7 +12834,8 @@
       ],
       "produces": [
        "application/json",
-       "application/yaml"
+       "application/yaml",
+       "application/vnd.kubernetes.protobuf"
       ],
       "consumes": [
        "*/*"
@@ -12838,7 +12845,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "PUT",
       "summary": "replace the specified SecurityContextConstraints",
-      "nickname": "replaceNamespacedSecurityContextConstraints",
+      "nickname": "replaceSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12874,7 +12881,8 @@
       ],
       "produces": [
        "application/json",
-       "application/yaml"
+       "application/yaml",
+       "application/vnd.kubernetes.protobuf"
       ],
       "consumes": [
        "*/*"
@@ -12884,7 +12892,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "PATCH",
       "summary": "partially update the specified SecurityContextConstraints",
-      "nickname": "patchNamespacedSecurityContextConstraints",
+      "nickname": "patchSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12920,7 +12928,8 @@
       ],
       "produces": [
        "application/json",
-       "application/yaml"
+       "application/yaml",
+       "application/vnd.kubernetes.protobuf"
       ],
       "consumes": [
        "application/json-patch+json",
@@ -12932,7 +12941,7 @@
       "type": "unversioned.Status",
       "method": "DELETE",
       "summary": "delete a SecurityContextConstraints",
-      "nickname": "deleteNamespacedSecurityContextConstraints",
+      "nickname": "deleteSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12968,7 +12977,8 @@
       ],
       "produces": [
        "application/json",
-       "application/yaml"
+       "application/yaml",
+       "application/vnd.kubernetes.protobuf"
       ],
       "consumes": [
        "*/*"
@@ -12981,10 +12991,10 @@
     "description": "API at /api/v1",
     "operations": [
      {
-      "type": "json.WatchEvent",
+      "type": "*versioned.Event",
       "method": "GET",
       "summary": "watch changes to an object of kind SecurityContextConstraints",
-      "nickname": "watchNamespacedSecurityContextConstraints",
+      "nickname": "watchSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -13047,11 +13057,14 @@
        {
         "code": 200,
         "message": "OK",
-        "responseModel": "json.WatchEvent"
+        "responseModel": "*versioned.Event"
        }
       ],
       "produces": [
-       "application/json"
+       "application/json",
+       "application/json;stream=watch",
+       "application/vnd.kubernetes.protobuf",
+       "application/vnd.kubernetes.protobuf;stream=watch"
       ],
       "consumes": [
        "*/*"
@@ -17378,6 +17391,10 @@
       "type": "object",
       "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: http://releases.k8s.io/HEAD/docs/user-guide/node-selection/README.md"
      },
+     "host": {
+      "type": "string",
+      "description": "A request to schedule this pod onto a specific node Deprecated: Use nodeName instead."
+     },
      "serviceAccountName": {
       "type": "string",
       "description": "ServiceAccountName is the name of the ServiceAccount to use to run this pod. More info: http://releases.k8s.io/HEAD/docs/design/service_accounts.md"
@@ -17509,6 +17526,10 @@
      "configMap": {
       "$ref": "v1.ConfigMapVolumeSource",
       "description": "ConfigMap represents a configMap that should populate this volume"
+     },
+     "metadata": {
+      "$ref": "v1.MetadataVolumeSource",
+      "description": "Metadata represents metadata about the pod that should populate this volume Deprecated: Use downwardAPI instead."
      }
     }
    },
@@ -17650,6 +17671,37 @@
      "path": {
       "type": "string",
       "description": "The relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+     }
+    }
+   },
+   "v1.MetadataVolumeSource": {
+    "id": "v1.MetadataVolumeSource",
+    "description": "MetadataVolumeSource represents a volume containing metadata about a pod. NOTE: Deprecated in favor of DownwardAPIVolumeSource",
+    "properties": {
+     "items": {
+      "type": "array",
+      "items": {
+       "$ref": "v1.MetadataFile"
+      },
+      "description": "Items is a list of metadata file name"
+     }
+    }
+   },
+   "v1.MetadataFile": {
+    "id": "v1.MetadataFile",
+    "description": "MetadataFile expresses information about a file holding pod metadata. NOTE: Deprecated in favor of DownwardAPIVolumeFile",
+    "required": [
+     "name",
+     "fieldRef"
+    ],
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Name of the file to be created"
+     },
+     "fieldRef": {
+      "$ref": "v1.ObjectFieldSelector",
+      "description": "Selects a field of the pod. Supported fields: metadata.annotations, metadata.labels, metadata.name, metadata.namespace"
      }
     }
    },
@@ -18711,11 +18763,11 @@
     "properties": {
      "kind": {
       "type": "string",
-      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#types-kinds"
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#types-kinds"
      },
      "apiVersion": {
       "type": "string",
-      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#resources"
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources"
      },
      "metadata": {
       "$ref": "unversioned.ListMeta"
@@ -18748,11 +18800,11 @@
     "properties": {
      "kind": {
       "type": "string",
-      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#types-kinds"
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#types-kinds"
      },
      "apiVersion": {
       "type": "string",
-      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#resources"
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources"
      },
      "metadata": {
       "$ref": "v1.ObjectMeta"
@@ -19074,6 +19126,10 @@
      "selector": {
       "type": "object",
       "description": "This service will route traffic to pods having labels matching this selector. Label keys and values that must match in order to receive traffic for this service. If empty, all pods are selected, if not specified, endpoints must be manually specified. More info: http://releases.k8s.io/HEAD/docs/user-guide/services.md#overview"
+     },
+     "portalIP": {
+      "type": "string",
+      "description": "The IP Address of the service. Deprecated: Use clusterIP instead."
      },
      "clusterIP": {
       "type": "string",

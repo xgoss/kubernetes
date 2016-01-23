@@ -5798,6 +5798,12 @@ func (m *PodSpec) MarshalTo(data []byte) (int, error) {
 	i++
 	i = encodeVarintGenerated(data, i, uint64(len(m.Subdomain)))
 	i += copy(data[i:], m.Subdomain)
+	data[i] = 0x92
+	i++
+	data[i] = 0x1
+	i++
+	i = encodeVarintGenerated(data, i, uint64(len(m.DeprecatedHost)))
+	i += copy(data[i:], m.DeprecatedHost)
 	return i, nil
 }
 
@@ -7544,6 +7550,10 @@ func (m *ServiceSpec) MarshalTo(data []byte) (int, error) {
 	i++
 	i = encodeVarintGenerated(data, i, uint64(len(m.LoadBalancerIP)))
 	i += copy(data[i:], m.LoadBalancerIP)
+	data[i] = 0x4a
+	i++
+	i = encodeVarintGenerated(data, i, uint64(len(m.DeprecatedPortalIP)))
+	i += copy(data[i:], m.DeprecatedPortalIP)
 	return i, nil
 }
 
@@ -9759,6 +9769,8 @@ func (m *PodSpec) Size() (n int) {
 	n += 2 + l + sovGenerated(uint64(l))
 	l = len(m.Subdomain)
 	n += 2 + l + sovGenerated(uint64(l))
+	l = len(m.DeprecatedHost)
+	n += 2 + l + sovGenerated(uint64(l))
 	return n
 }
 
@@ -10383,6 +10395,8 @@ func (m *ServiceSpec) Size() (n int) {
 	l = len(m.SessionAffinity)
 	n += 1 + l + sovGenerated(uint64(l))
 	l = len(m.LoadBalancerIP)
+	n += 1 + l + sovGenerated(uint64(l))
+	l = len(m.DeprecatedPortalIP)
 	n += 1 + l + sovGenerated(uint64(l))
 	return n
 }
@@ -27814,6 +27828,35 @@ func (m *PodSpec) Unmarshal(data []byte) error {
 			}
 			m.Subdomain = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 18:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeprecatedHost", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := data[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DeprecatedHost = string(data[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGenerated(data[iNdEx:])
@@ -33883,6 +33926,35 @@ func (m *ServiceSpec) Unmarshal(data []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.LoadBalancerIP = string(data[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeprecatedPortalIP", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := data[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DeprecatedPortalIP = string(data[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

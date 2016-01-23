@@ -2080,6 +2080,10 @@ message PodSpec {
   // More info: http://releases.k8s.io/HEAD/docs/user-guide/node-selection/README.md
   map<string, string> nodeSelector = 7;
 
+  // A request to schedule this pod onto a specific node
+  // Deprecated: Use nodeName instead.
+  optional string host = 18;
+
   // ServiceAccountName is the name of the ServiceAccount to use to run this pod.
   // More info: http://releases.k8s.io/HEAD/docs/design/service_accounts.md
   optional string serviceAccountName = 8;
@@ -2760,6 +2764,11 @@ message ServiceSpec {
   // If empty, all pods are selected, if not specified, endpoints must be manually specified.
   // More info: http://releases.k8s.io/HEAD/docs/user-guide/services.md#overview
   map<string, string> selector = 2;
+
+  // The IP Address of the service.
+  // Deprecated: Use clusterIP instead.
+  // +genconversion=false
+  optional string portalIP = 9;
 
   // ClusterIP is usually assigned by the master and is the IP address of the service.
   // If specified, it will be allocated to the service if it is unused

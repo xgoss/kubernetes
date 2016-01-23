@@ -1567,6 +1567,7 @@ func Convert_api_EndpointAddress_To_v1_EndpointAddress(in *api.EndpointAddress, 
 }
 
 func autoConvert_v1_EndpointPort_To_api_EndpointPort(in *EndpointPort, out *api.EndpointPort, s conversion.Scope) error {
+	SetDefaults_EndpointPort(in)
 	out.Name = in.Name
 	out.Port = in.Port
 	out.Protocol = api.Protocol(in.Protocol)
@@ -6749,6 +6750,7 @@ func Convert_api_ServiceList_To_v1_ServiceList(in *api.ServiceList, out *Service
 }
 
 func autoConvert_v1_ServicePort_To_api_ServicePort(in *ServicePort, out *api.ServicePort, s conversion.Scope) error {
+	SetDefaults_ServicePort(in)
 	out.Name = in.Name
 	out.Protocol = api.Protocol(in.Protocol)
 	out.Port = in.Port
