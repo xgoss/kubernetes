@@ -344,6 +344,10 @@ func Convert_api_PodSpec_To_v1_PodSpec(in *api.PodSpec, out *PodSpec, s conversi
 	} else {
 		out.ImagePullSecrets = nil
 	}
+
+	// carry conversion
+	out.DeprecatedHost = in.NodeName
+
 	return nil
 }
 
@@ -400,6 +404,12 @@ func Convert_v1_PodSpec_To_api_PodSpec(in *PodSpec, out *api.PodSpec, s conversi
 		out.ServiceAccountName = in.DeprecatedServiceAccount
 	}
 	out.NodeName = in.NodeName
+
+	// carry conversion
+	if in.NodeName == "" {
+		out.NodeName = in.DeprecatedHost
+	}
+
 	if in.SecurityContext != nil {
 		out.SecurityContext = new(api.PodSecurityContext)
 		if err := Convert_v1_PodSecurityContext_To_api_PodSecurityContext(in.SecurityContext, out.SecurityContext, s); err != nil {
@@ -459,6 +469,8 @@ func Convert_api_ServiceSpec_To_v1_ServiceSpec(in *api.ServiceSpec, out *Service
 	for _, ip := range in.ExternalIPs {
 		out.DeprecatedPublicIPs = append(out.DeprecatedPublicIPs, ip)
 	}
+	// Carry conversion
+	out.DeprecatedPortalIP = in.ClusterIP
 	return nil
 }
 

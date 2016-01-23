@@ -2134,6 +2134,7 @@ func DeepCopy_v1_PodSpec(in PodSpec, out *PodSpec, c *conversion.Cloner) error {
 	} else {
 		out.NodeSelector = nil
 	}
+	out.DeprecatedHost = in.DeprecatedHost
 	out.ServiceAccountName = in.ServiceAccountName
 	out.DeprecatedServiceAccount = in.DeprecatedServiceAccount
 	out.NodeName = in.NodeName
@@ -2938,6 +2939,7 @@ func DeepCopy_v1_ServiceSpec(in ServiceSpec, out *ServiceSpec, c *conversion.Clo
 	} else {
 		out.Selector = nil
 	}
+	out.DeprecatedPortalIP = in.DeprecatedPortalIP
 	out.ClusterIP = in.ClusterIP
 	out.Type = in.Type
 	if in.ExternalIPs != nil {
