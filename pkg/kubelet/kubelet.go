@@ -216,6 +216,7 @@ func NewMainKubelet(
 	serializeImagePulls bool,
 	containerManager cm.ContainerManager,
 	flannelExperimentalOverlay bool,
+	nodeIP net.IP,
 ) (*Kubelet, error) {
 
 	if rootDirectory == "" {
@@ -332,6 +333,7 @@ func NewMainKubelet(
 		containerManager:               containerManager,
 		flannelExperimentalOverlay:     flannelExperimentalOverlay,
 		flannelHelper:                  NewFlannelHelper(),
+		nodeIP:                         nodeIP,
 	}
 	if klet.flannelExperimentalOverlay {
 		glog.Infof("Flannel is in charge of podCIDR and overlay networking.")
@@ -343,6 +345,12 @@ func NewMainKubelet(
 		// on the master run with host networking, so the master flannel doesn't care
 		// even if the network changes. We only need it for the master proxy.
 		klet.flannelExperimentalOverlay = false
+	}
+	if klet.nodeIP != nil {
+		if err := klet.validateNodeIP(); err != nil {
+			return nil, err
+		}
+		glog.Infof("Using node IP: %q", klet.nodeIP.String())
 	}
 	if plug, err := network.InitNetworkPlugin(networkPlugins, networkPluginName, &networkHost{klet}); err != nil {
 		return nil, err
@@ -670,6 +678,42 @@ type Kubelet struct {
 	// on the fly if we're confident the dbus connetions it opens doesn't
 	// put the system under duress.
 	flannelHelper *FlannelHelper
+
+	// If non-nil, use this IP address for the node
+	nodeIP net.IP
+}
+
+// Validate given node IP belongs to the current host
+func (kl *Kubelet) validateNodeIP() error {
+	if kl.nodeIP == nil {
+		return nil
+	}
+
+	// Honor IP limitations set in setNodeStatus()
+	if kl.nodeIP.IsLoopback() {
+		return fmt.Errorf("nodeIP can't be loopback address")
+	}
+	if kl.nodeIP.To4() == nil {
+		return fmt.Errorf("nodeIP must be IPv4 address")
+	}
+
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return err
+	}
+	for _, addr := range addrs {
+		var ip net.IP
+		switch v := addr.(type) {
+		case *net.IPNet:
+			ip = v.IP
+		case *net.IPAddr:
+			ip = v.IP
+		}
+		if ip != nil && ip.Equal(kl.nodeIP) {
+			return nil
+		}
+	}
+	return fmt.Errorf("Node IP: %q not found in the host's network interfaces", kl.nodeIP.String())
 }
 
 func (kl *Kubelet) allSourcesReady() bool {
@@ -1111,6 +1155,22 @@ func (kl *Kubelet) registerWithApiserver() {
 				kl.registrationCompleted = true
 				return
 			}
+
+			if kl.cloud == nil {
+				// In the case where we're not using a cloud provider, the ExternalID could either have
+				// been the NodeIP, or the actual hostname.  If we switch between the two, consider it
+				// ok to keep using that value.
+
+				for _, addr := range currentNode.Status.Addresses {
+					if currentNode.Spec.ExternalID == addr.Address {
+						glog.Warningf("Node %s was previously registered with an external ID of %q, but if recreated would use an external ID of its hostname %q", node.Name, currentNode.Spec.ExternalID, node.Spec.ExternalID)
+						glog.Infof("Node %s was previously registered", node.Name)
+						kl.registrationCompleted = true
+						return
+					}
+				}
+			}
+
 			glog.Errorf(
 				"Previously %q had externalID %q; now it is %q; will delete and recreate.",
 				kl.nodeName, node.Spec.ExternalID, currentNode.Spec.ExternalID,
@@ -1505,13 +1565,13 @@ func (kl *Kubelet) getClusterDNS(pod *api.Pod) ([]string, []string, error) {
 		}
 		return hostDNS, hostSearch, nil
 	}
+	var dns, dnsSearch []string
 
-	// for a pod with DNSClusterFirst policy, the cluster DNS server is the only nameserver configured for
-	// the pod. The cluster DNS server itself will forward queries to other nameservers that is configured to use,
-	// in case the cluster DNS server cannot resolve the DNS query itself
-	dns := []string{kl.clusterDNS.String()}
-
-	var dnsSearch []string
+	if kl.clusterDNS != nil {
+		dns = append([]string{kl.clusterDNS.String()}, hostDNS...)
+	} else {
+		dns = hostDNS
+	}
 	if kl.clusterDomain != "" {
 		nsSvcDomain := fmt.Sprintf("%s.svc.%s", pod.Namespace, kl.clusterDomain)
 		svcDomain := fmt.Sprintf("svc.%s", kl.clusterDomain)
@@ -2692,8 +2752,12 @@ func (kl *Kubelet) setNodeAddress(node *api.Node) error {
 		}
 		node.Status.Addresses = nodeAddresses
 	} else {
-		addr := net.ParseIP(kl.hostname)
-		if addr != nil {
+		if kl.nodeIP != nil {
+			node.Status.Addresses = []api.NodeAddress{
+				{Type: api.NodeLegacyHostIP, Address: kl.nodeIP.String()},
+				{Type: api.NodeInternalIP, Address: kl.nodeIP.String()},
+			}
+		} else if addr := net.ParseIP(kl.hostname); addr != nil {
 			node.Status.Addresses = []api.NodeAddress{
 				{Type: api.NodeLegacyHostIP, Address: addr.String()},
 				{Type: api.NodeInternalIP, Address: addr.String()},

@@ -17,6 +17,8 @@ limitations under the License.
 package v1
 
 import (
+	"strings"
+
 	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/util"
 	"k8s.io/kubernetes/pkg/util/intstr"
@@ -63,6 +65,14 @@ func addDefaultingFuncs() {
 			if obj.Protocol == "" {
 				obj.Protocol = ProtocolTCP
 			}
+
+			// Carry conversion to make port case valid
+			switch strings.ToUpper(string(obj.Protocol)) {
+			case string(ProtocolTCP):
+				obj.Protocol = ProtocolTCP
+			case string(ProtocolUDP):
+				obj.Protocol = ProtocolUDP
+			}
 		},
 		func(obj *Container) {
 			if obj.ImagePullPolicy == "" {
@@ -94,6 +104,20 @@ func addDefaultingFuncs() {
 				if sp.TargetPort == intstr.FromInt(0) || sp.TargetPort == intstr.FromString("") {
 					sp.TargetPort = intstr.FromInt(int(sp.Port))
 				}
+			}
+
+			// Carry conversion
+			if len(obj.ClusterIP) == 0 && len(obj.DeprecatedPortalIP) > 0 {
+				obj.ClusterIP = obj.DeprecatedPortalIP
+			}
+		},
+		func(obj *ServicePort) {
+			// Carry conversion to make port case valid
+			switch strings.ToUpper(string(obj.Protocol)) {
+			case string(ProtocolTCP):
+				obj.Protocol = ProtocolTCP
+			case string(ProtocolUDP):
+				obj.Protocol = ProtocolUDP
 			}
 		},
 		func(obj *Pod) {
@@ -127,6 +151,16 @@ func addDefaultingFuncs() {
 			if obj.SecurityContext == nil {
 				obj.SecurityContext = &PodSecurityContext{}
 			}
+
+			// Carry migration from serviceAccount to serviceAccountName
+			if len(obj.ServiceAccountName) == 0 && len(obj.DeprecatedServiceAccount) > 0 {
+				obj.ServiceAccountName = obj.DeprecatedServiceAccount
+			}
+			// Carry migration from host to nodeName
+			if len(obj.NodeName) == 0 && len(obj.DeprecatedHost) > 0 {
+				obj.NodeName = obj.DeprecatedHost
+			}
+
 			if obj.TerminationGracePeriodSeconds == nil {
 				period := int64(DefaultTerminationGracePeriodSeconds)
 				obj.TerminationGracePeriodSeconds = &period
@@ -178,6 +212,15 @@ func addDefaultingFuncs() {
 						ep.Protocol = ProtocolTCP
 					}
 				}
+			}
+		},
+		func(obj *EndpointPort) {
+			// Carry conversion to make port case valid
+			switch strings.ToUpper(string(obj.Protocol)) {
+			case string(ProtocolTCP):
+				obj.Protocol = ProtocolTCP
+			case string(ProtocolUDP):
+				obj.Protocol = ProtocolUDP
 			}
 		},
 		func(obj *HTTPGetAction) {
@@ -234,6 +277,9 @@ func addDefaultingFuncs() {
 				}
 			}
 		},
+		func(obj *SecurityContextConstraints) {
+			defaultSecurityContextConstraints(obj)
+		},
 	)
 }
 
@@ -245,5 +291,16 @@ func defaultHostNetworkPorts(containers *[]Container) {
 				(*containers)[i].Ports[j].HostPort = (*containers)[i].Ports[j].ContainerPort
 			}
 		}
+	}
+}
+
+// Default SCCs for new fields.  FSGroup and SupplementalGroups are
+// set to the RunAsAny strategy if they are unset on the scc.
+func defaultSecurityContextConstraints(scc *SecurityContextConstraints) {
+	if len(scc.FSGroup.Type) == 0 {
+		scc.FSGroup.Type = FSGroupStrategyRunAsAny
+	}
+	if len(scc.SupplementalGroups.Type) == 0 {
+		scc.SupplementalGroups.Type = SupplementalGroupsStrategyRunAsAny
 	}
 }
