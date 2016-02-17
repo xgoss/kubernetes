@@ -24,8 +24,10 @@ import (
 	"strings"
 
 	"github.com/golang/glog"
+	"k8s.io/kubernetes/pkg/api/meta"
 	"k8s.io/kubernetes/pkg/api/unversioned"
 	"k8s.io/kubernetes/pkg/apimachinery"
+	"k8s.io/kubernetes/pkg/util/sets"
 )
 
 var (
@@ -73,11 +75,47 @@ func RegisterVersions(availableVersions []unversioned.GroupVersion) {
 // RegisterGroup adds the given group to the list of registered groups.
 func RegisterGroup(groupMeta apimachinery.GroupMeta) error {
 	groupName := groupMeta.GroupVersion.Group
-	if _, found := groupMetaMap[groupName]; found {
-		return fmt.Errorf("group %v is already registered", groupMetaMap)
+	if existing, found := groupMetaMap[groupName]; found {
+		mergedGroupMeta := mergeGroupMeta(*existing, groupMeta)
+		groupMetaMap[groupName] = &mergedGroupMeta
+		return nil
+		// return fmt.Errorf("group %v is already registered", groupMetaMap)
 	}
 	groupMetaMap[groupName] = &groupMeta
 	return nil
+}
+
+// mergeGroupMeta takes an lhs and an rhs GroupMeta, then builds a resulting GroupMeta that contains the
+// merged information.  Order of merging matters: lhs wins.
+func mergeGroupMeta(lhs, rhs apimachinery.GroupMeta) apimachinery.GroupMeta {
+	merged := apimachinery.GroupMeta{}
+
+	merged.GroupVersion = lhs.GroupVersion
+	merged.SelfLinker = lhs.SelfLinker
+
+	knownGVs := sets.String{}
+	for _, lhsGV := range lhs.GroupVersions {
+		knownGVs.Insert(lhsGV.String())
+		merged.GroupVersions = append(merged.GroupVersions, lhsGV)
+	}
+	for _, rhsGV := range lhs.GroupVersions {
+		if knownGVs.Has(rhsGV.String()) {
+			continue
+		}
+		merged.GroupVersions = append(merged.GroupVersions, rhsGV)
+	}
+
+	merged.RESTMapper = meta.MultiRESTMapper(append([]meta.RESTMapper{}, lhs.RESTMapper, rhs.RESTMapper))
+
+	merged.InterfacesFor = func(version unversioned.GroupVersion) (*meta.VersionInterfaces, error) {
+		if ret, err := lhs.InterfacesFor(version); err == nil {
+			return ret, nil
+		}
+
+		return rhs.InterfacesFor(version)
+	}
+
+	return merged
 }
 
 // EnableVersions adds the versions for the given group to the list of enabled versions.
@@ -114,22 +152,24 @@ func IsEnabledVersion(v unversioned.GroupVersion) bool {
 	return found
 }
 
-// EnabledVersions returns all enabled versions.
-func EnabledVersions() (ret []unversioned.GroupVersion) {
-	for v := range enabledVersions {
-		ret = append(ret, v)
+// EnabledVersions returns all enabled versions.  Groups are randomly ordered, but versions within groups
+// are priority order from best to worst
+func EnabledVersions() []unversioned.GroupVersion {
+	ret := []unversioned.GroupVersion{}
+	for _, groupMeta := range groupMetaMap {
+		ret = append(ret, groupMeta.GroupVersions...)
 	}
-	return
+	return ret
 }
 
-// EnabledVersionsForGroup returns all enabled versions for a group.
-func EnabledVersionsForGroup(group string) (ret []unversioned.GroupVersion) {
-	for v := range enabledVersions {
-		if v.Group == group {
-			ret = append(ret, v)
-		}
+// EnabledVersionsForGroup returns all enabled versions for a group in order of best to worst
+func EnabledVersionsForGroup(group string) []unversioned.GroupVersion {
+	groupMeta, ok := groupMetaMap[group]
+	if !ok {
+		return []unversioned.GroupVersion{}
 	}
-	return
+
+	return append([]unversioned.GroupVersion{}, groupMeta.GroupVersions...)
 }
 
 // Group returns the metadata of a group if the gruop is registered, otherwise

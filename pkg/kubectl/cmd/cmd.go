@@ -111,25 +111,37 @@ __custom_func() {
 }
 `
 	valid_resources = `Valid resource types include:
+   * buildconfigs (aka 'bc')
+   * builds
    * componentstatuses (aka 'cs')
+   * daemonsets (aka 'ds')
+   * deploymentconfigs (aka 'dc')
    * events (aka 'ev')
    * endpoints (aka 'ep')
    * horizontalpodautoscalers (aka 'hpa')
+   * imagestreamimages (aka 'isimage')
+   * imagestreams (aka 'is')
+   * imagestreamtags (aka 'istag')
    * ingress (aka 'ing')
+   * groups
    * jobs
    * limitranges (aka 'limits')
-   * nodes (aka 'no')
    * namespaces (aka 'ns')
+   * nodes (aka 'no')
    * pods (aka 'po')
    * persistentvolumes (aka 'pv')
    * persistentvolumeclaims (aka 'pvc')
+   * policies
+   * projects
    * quota
    * resourcequotas (aka 'quota')
    * replicasets (aka 'rs')
    * replicationcontrollers (aka 'rc')
+   * rolebindings
+   * routes
    * secrets
    * serviceaccounts
-   * services (aka 'svc')
+   * users
 `
 )
 
