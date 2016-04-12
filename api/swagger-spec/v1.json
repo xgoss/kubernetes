@@ -57,6 +57,50 @@
     ]
    },
    {
+    "path": "/api/v1/bindings",
+    "description": "API at /api/v1",
+    "operations": [
+     {
+      "type": "v1.Binding",
+      "method": "POST",
+      "summary": "create a Binding",
+      "nickname": "createNamespacedBinding",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.Binding",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.Binding"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
+     }
+    ]
+   },
+   {
     "path": "/api/v1/componentstatuses",
     "description": "API at /api/v1",
     "operations": [
@@ -863,6 +907,44 @@
       "consumes": [
        "*/*"
       ]
+     },
+     {
+      "type": "v1.ConfigMap",
+      "method": "POST",
+      "summary": "create a ConfigMap",
+      "nickname": "createNamespacedConfigMap",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.ConfigMap",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.ConfigMap"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
      }
     ]
    },
@@ -1619,6 +1701,44 @@
         "code": 200,
         "message": "OK",
         "responseModel": "v1.EndpointsList"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
+     },
+     {
+      "type": "v1.Endpoints",
+      "method": "POST",
+      "summary": "create a Endpoints",
+      "nickname": "createNamespacedEndpoints",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.Endpoints",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.Endpoints"
        }
       ],
       "produces": [
@@ -2393,6 +2513,44 @@
       "consumes": [
        "*/*"
       ]
+     },
+     {
+      "type": "v1.Event",
+      "method": "POST",
+      "summary": "create a Event",
+      "nickname": "createNamespacedEvent",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.Event",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.Event"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
      }
     ]
    },
@@ -3149,6 +3307,44 @@
         "code": 200,
         "message": "OK",
         "responseModel": "v1.LimitRangeList"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
+     },
+     {
+      "type": "v1.LimitRange",
+      "method": "POST",
+      "summary": "create a LimitRange",
+      "nickname": "createNamespacedLimitRange",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.LimitRange",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.LimitRange"
        }
       ],
       "produces": [
@@ -5907,6 +6103,44 @@
       "consumes": [
        "*/*"
       ]
+     },
+     {
+      "type": "v1.PersistentVolumeClaim",
+      "method": "POST",
+      "summary": "create a PersistentVolumeClaim",
+      "nickname": "createNamespacedPersistentVolumeClaim",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.PersistentVolumeClaim",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.PersistentVolumeClaim"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
      }
     ]
    },
@@ -7737,6 +7971,44 @@
         "code": 200,
         "message": "OK",
         "responseModel": "v1.PodList"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
+     },
+     {
+      "type": "v1.Pod",
+      "method": "POST",
+      "summary": "create a Pod",
+      "nickname": "createNamespacedPod",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.Pod",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.Pod"
        }
       ],
       "produces": [
@@ -9637,6 +9909,44 @@
       "consumes": [
        "*/*"
       ]
+     },
+     {
+      "type": "v1.PodTemplate",
+      "method": "POST",
+      "summary": "create a PodTemplate",
+      "nickname": "createNamespacedPodTemplate",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.PodTemplate",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.PodTemplate"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
      }
     ]
    },
@@ -10393,6 +10703,44 @@
         "code": 200,
         "message": "OK",
         "responseModel": "v1.ReplicationControllerList"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
+     },
+     {
+      "type": "v1.ReplicationController",
+      "method": "POST",
+      "summary": "create a ReplicationController",
+      "nickname": "createNamespacedReplicationController",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.ReplicationController",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.ReplicationController"
        }
       ],
       "produces": [
@@ -11389,6 +11737,44 @@
       "consumes": [
        "*/*"
       ]
+     },
+     {
+      "type": "v1.ResourceQuota",
+      "method": "POST",
+      "summary": "create a ResourceQuota",
+      "nickname": "createNamespacedResourceQuota",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.ResourceQuota",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.ResourceQuota"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
      }
     ]
    },
@@ -12214,6 +12600,44 @@
       "consumes": [
        "*/*"
       ]
+     },
+     {
+      "type": "v1.Secret",
+      "method": "POST",
+      "summary": "create a Secret",
+      "nickname": "createNamespacedSecret",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.Secret",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.Secret"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
      }
     ]
    },
@@ -12300,7 +12724,7 @@
       "type": "v1.SecurityContextConstraintsList",
       "method": "GET",
       "summary": "list or watch objects of kind SecurityContextConstraints",
-      "nickname": "listNamespacedSecurityContextConstraints",
+      "nickname": "listSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12370,7 +12794,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "POST",
       "summary": "create a SecurityContextConstraints",
-      "nickname": "createNamespacedSecurityContextConstraints",
+      "nickname": "createSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12408,7 +12832,7 @@
       "type": "unversioned.Status",
       "method": "DELETE",
       "summary": "delete collection of SecurityContextConstraints",
-      "nickname": "deletecollectionNamespacedSecurityContextConstraints",
+      "nickname": "deletecollectionSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12484,7 +12908,7 @@
       "type": "json.WatchEvent",
       "method": "GET",
       "summary": "watch individual changes to a list of SecurityContextConstraints",
-      "nickname": "watchNamespacedSecurityContextConstraintsList",
+      "nickname": "watchSecurityContextConstraintsList",
       "parameters": [
        {
         "type": "string",
@@ -12559,7 +12983,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "GET",
       "summary": "read the specified SecurityContextConstraints",
-      "nickname": "readNamespacedSecurityContextConstraints",
+      "nickname": "readSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12613,7 +13037,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "PUT",
       "summary": "replace the specified SecurityContextConstraints",
-      "nickname": "replaceNamespacedSecurityContextConstraints",
+      "nickname": "replaceSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12659,7 +13083,7 @@
       "type": "v1.SecurityContextConstraints",
       "method": "PATCH",
       "summary": "partially update the specified SecurityContextConstraints",
-      "nickname": "patchNamespacedSecurityContextConstraints",
+      "nickname": "patchSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12707,7 +13131,7 @@
       "type": "unversioned.Status",
       "method": "DELETE",
       "summary": "delete a SecurityContextConstraints",
-      "nickname": "deleteNamespacedSecurityContextConstraints",
+      "nickname": "deleteSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -12759,7 +13183,7 @@
       "type": "json.WatchEvent",
       "method": "GET",
       "summary": "watch changes to an object of kind SecurityContextConstraints",
-      "nickname": "watchNamespacedSecurityContextConstraints",
+      "nickname": "watchSecurityContextConstraints",
       "parameters": [
        {
         "type": "string",
@@ -13512,6 +13936,44 @@
         "code": 200,
         "message": "OK",
         "responseModel": "v1.ServiceAccountList"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
+     },
+     {
+      "type": "v1.ServiceAccount",
+      "method": "POST",
+      "summary": "create a ServiceAccount",
+      "nickname": "createNamespacedServiceAccount",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.ServiceAccount",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.ServiceAccount"
        }
       ],
       "produces": [
@@ -14611,6 +15073,44 @@
         "code": 200,
         "message": "OK",
         "responseModel": "v1.ServiceList"
+       }
+      ],
+      "produces": [
+       "application/json",
+       "application/yaml"
+      ],
+      "consumes": [
+       "*/*"
+      ]
+     },
+     {
+      "type": "v1.Service",
+      "method": "POST",
+      "summary": "create a Service",
+      "nickname": "createNamespacedService",
+      "parameters": [
+       {
+        "type": "string",
+        "paramType": "query",
+        "name": "pretty",
+        "description": "If 'true', then the output is pretty printed.",
+        "required": false,
+        "allowMultiple": false
+       },
+       {
+        "type": "v1.Service",
+        "paramType": "body",
+        "name": "body",
+        "description": "",
+        "required": true,
+        "allowMultiple": false
+       }
+      ],
+      "responseMessages": [
+       {
+        "code": 200,
+        "message": "OK",
+        "responseModel": "v1.Service"
        }
       ],
       "produces": [
@@ -17078,7 +17578,7 @@
      },
      "host": {
       "type": "string",
-      "description": "DeprecatedHost is a request to schedule this pod onto a specific node"
+      "description": "A request to schedule this pod onto a specific node Deprecated: Use nodeName instead."
      },
      "serviceAccountName": {
       "type": "string",
@@ -17203,6 +17703,10 @@
      "configMap": {
       "$ref": "v1.ConfigMapVolumeSource",
       "description": "ConfigMap represents a configMap that should populate this volume"
+     },
+     "metadata": {
+      "$ref": "v1.MetadataVolumeSource",
+      "description": "Metadata represents metadata about the pod that should populate this volume Deprecated: Use downwardAPI instead."
      }
     }
    },
@@ -17344,6 +17848,37 @@
      "path": {
       "type": "string",
       "description": "The relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+     }
+    }
+   },
+   "v1.MetadataVolumeSource": {
+    "id": "v1.MetadataVolumeSource",
+    "description": "MetadataVolumeSource represents a volume containing metadata about a pod. NOTE: Deprecated in favor of DownwardAPIVolumeSource",
+    "properties": {
+     "items": {
+      "type": "array",
+      "items": {
+       "$ref": "v1.MetadataFile"
+      },
+      "description": "Items is a list of metadata file name"
+     }
+    }
+   },
+   "v1.MetadataFile": {
+    "id": "v1.MetadataFile",
+    "description": "MetadataFile expresses information about a file holding pod metadata. NOTE: Deprecated in favor of DownwardAPIVolumeFile",
+    "required": [
+     "name",
+     "fieldRef"
+    ],
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "Name of the file to be created"
+     },
+     "fieldRef": {
+      "$ref": "v1.ObjectFieldSelector",
+      "description": "Selects a field of the pod. Supported fields: metadata.annotations, metadata.labels, metadata.name, metadata.namespace"
      }
     }
    },
@@ -18405,11 +18940,11 @@
     "properties": {
      "kind": {
       "type": "string",
-      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#types-kinds"
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#types-kinds"
      },
      "apiVersion": {
       "type": "string",
-      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#resources"
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources"
      },
      "metadata": {
       "$ref": "unversioned.ListMeta"
@@ -18442,11 +18977,11 @@
     "properties": {
      "kind": {
       "type": "string",
-      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#types-kinds"
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#types-kinds"
      },
      "apiVersion": {
       "type": "string",
-      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/release-1.2/docs/devel/api-conventions.md#resources"
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources"
      },
      "metadata": {
       "$ref": "v1.ObjectMeta"
@@ -18771,7 +19306,7 @@
      },
      "portalIP": {
       "type": "string",
-      "description": "DeprecatedPortalIP"
+      "description": "The IP Address of the service. Deprecated: Use clusterIP instead."
      },
      "clusterIP": {
       "type": "string",
