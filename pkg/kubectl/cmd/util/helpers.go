@@ -248,6 +248,26 @@ func MultilineError(prefix string, err error) string {
 	return fmt.Sprintf("%s%s\n", prefix, err)
 }
 
+// PrintErrorWithCauses prints an error's kind, name, and each of the error's causes in a new line.
+// The returned string will end with a newline.
+// Returns true if the error type can be handled, or false otherwise.
+func PrintErrorWithCauses(err error, errOut io.Writer) bool {
+	switch t := err.(type) {
+	case *kerrors.StatusError:
+		errorDetails := t.Status().Details
+		if errorDetails != nil {
+			fmt.Fprintf(errOut, "error: %s %q is invalid\n\n", errorDetails.Kind, errorDetails.Name)
+			for _, cause := range errorDetails.Causes {
+				fmt.Fprintf(errOut, "* %s: %s\n", cause.Field, cause.Message)
+			}
+			return true
+		}
+	}
+
+	fmt.Fprintf(errOut, "error: %v\n", err)
+	return false
+}
+
 // MultipleErrors returns a newline delimited string containing
 // the prefix and referenced errors in standard form.
 func MultipleErrors(prefix string, errs []error) string {
@@ -296,7 +316,7 @@ func getFlag(cmd *cobra.Command, flag string) *pflag.Flag {
 func GetFlagString(cmd *cobra.Command, flag string) string {
 	s, err := cmd.Flags().GetString(flag)
 	if err != nil {
-		glog.Fatalf("err accessing flag %s for command %s: %v", flag, cmd.Name(), err)
+		glog.Fatalf("error accessing flag %s for command %s: %v", flag, cmd.Name(), err)
 	}
 	return s
 }
@@ -305,7 +325,7 @@ func GetFlagString(cmd *cobra.Command, flag string) string {
 func GetFlagStringSlice(cmd *cobra.Command, flag string) []string {
 	s, err := cmd.Flags().GetStringSlice(flag)
 	if err != nil {
-		glog.Fatalf("err accessing flag %s for command %s: %v", flag, cmd.Name(), err)
+		glog.Fatalf("error accessing flag %s for command %s: %v", flag, cmd.Name(), err)
 	}
 	return s
 }
@@ -322,7 +342,7 @@ func GetWideFlag(cmd *cobra.Command) bool {
 func GetFlagBool(cmd *cobra.Command, flag string) bool {
 	b, err := cmd.Flags().GetBool(flag)
 	if err != nil {
-		glog.Fatalf("err accessing flag %s for command %s: %v", flag, cmd.Name(), err)
+		glog.Fatalf("error accessing flag %s for command %s: %v", flag, cmd.Name(), err)
 	}
 	return b
 }
@@ -331,7 +351,7 @@ func GetFlagBool(cmd *cobra.Command, flag string) bool {
 func GetFlagInt(cmd *cobra.Command, flag string) int {
 	i, err := cmd.Flags().GetInt(flag)
 	if err != nil {
-		glog.Fatalf("err accessing flag %s for command %s: %v", flag, cmd.Name(), err)
+		glog.Fatalf("error accessing flag %s for command %s: %v", flag, cmd.Name(), err)
 	}
 	return i
 }
@@ -340,7 +360,7 @@ func GetFlagInt(cmd *cobra.Command, flag string) int {
 func GetFlagInt64(cmd *cobra.Command, flag string) int64 {
 	i, err := cmd.Flags().GetInt64(flag)
 	if err != nil {
-		glog.Fatalf("err accessing flag %s for command %s: %v", flag, cmd.Name(), err)
+		glog.Fatalf("error accessing flag %s for command %s: %v", flag, cmd.Name(), err)
 	}
 	return i
 }
@@ -348,7 +368,7 @@ func GetFlagInt64(cmd *cobra.Command, flag string) int64 {
 func GetFlagDuration(cmd *cobra.Command, flag string) time.Duration {
 	d, err := cmd.Flags().GetDuration(flag)
 	if err != nil {
-		glog.Fatalf("err accessing flag %s for command %s: %v", flag, cmd.Name(), err)
+		glog.Fatalf("error accessing flag %s for command %s: %v", flag, cmd.Name(), err)
 	}
 	return d
 }
@@ -601,7 +621,7 @@ func ParsePairs(pairArgs []string, pairType string, supportRemove bool) (newPair
 	for _, pairArg := range pairArgs {
 		if strings.Index(pairArg, "=") != -1 {
 			parts := strings.SplitN(pairArg, "=", 2)
-			if len(parts) != 2 || len(parts[1]) == 0 {
+			if len(parts) != 2 {
 				if invalidBuf.Len() > 0 {
 					invalidBuf.WriteString(", ")
 				}
@@ -723,4 +743,21 @@ func IsSiblingCommandExists(cmd *cobra.Command, targetCmdName string) bool {
 	}
 
 	return false
+}
+
+// DefaultSubCommandRun prints a command's help string to the specified output if no
+// arguments (sub-commands) are provided, or a usage error otherwise.
+func DefaultSubCommandRun(out io.Writer) func(c *cobra.Command, args []string) {
+	return func(c *cobra.Command, args []string) {
+		c.SetOutput(out)
+		RequireNoArguments(c, args)
+		c.Help()
+	}
+}
+
+// RequireNoArguments exits with a usage error if extra arguments are provided.
+func RequireNoArguments(c *cobra.Command, args []string) {
+	if len(args) > 0 {
+		CheckErr(UsageError(c, fmt.Sprintf(`unknown command "%s"`, strings.Join(args, " "))))
+	}
 }

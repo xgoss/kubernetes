@@ -1242,7 +1242,7 @@ type Container struct {
 	Resources ResourceRequirements `json:"resources,omitempty" protobuf:"bytes,8,opt,name=resources"`
 	// Pod volumes to mount into the container's filesystem.
 	// Cannot be updated.
-	VolumeMounts []VolumeMount `json:"volumeMounts,omitempty" patchStrategy:"merge" patchMergeKey:"name" protobuf:"bytes,9,rep,name=volumeMounts"`
+	VolumeMounts []VolumeMount `json:"volumeMounts,omitempty" patchStrategy:"merge" patchMergeKey:"mountPath" protobuf:"bytes,9,rep,name=volumeMounts"`
 	// Periodic probe of container liveness.
 	// Container will be restarted if the probe fails.
 	// Cannot be updated.
@@ -3098,6 +3098,8 @@ const (
 	LimitTypePod LimitType = "Pod"
 	// Limit that applies to all containers in a namespace
 	LimitTypeContainer LimitType = "Container"
+	// Limit that applies to all persistent volume claims in a namespace
+	LimitTypePersistentVolumeClaim LimitType = "PersistentVolumeClaim"
 )
 
 // LimitRangeItem defines a min/max usage limit for any resource that matches on kind.
