@@ -258,7 +258,7 @@ func TestNotRestRoutesHaveAuth(t *testing.T) {
 		route string
 	}{
 		{"/"},
-		{"/swagger-ui/"},
+		//{"/swagger-ui/"},
 		{"/debug/pprof/"},
 		{"/version"},
 	} {

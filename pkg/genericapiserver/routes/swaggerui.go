@@ -16,25 +16,22 @@ limitations under the License.
 
 package routes
 
-import (
-	"net/http"
-
-	assetfs "github.com/elazarl/go-bindata-assetfs"
-
-	"k8s.io/kubernetes/pkg/genericapiserver/mux"
-	"k8s.io/kubernetes/pkg/genericapiserver/routes/data/swagger"
-)
+import "k8s.io/kubernetes/pkg/genericapiserver/mux"
 
 // SwaggerUI exposes files in third_party/swagger-ui/ under /swagger-ui.
 type SwaggerUI struct{}
 
 // Install adds the SwaggerUI webservice to the given mux.
 func (l SwaggerUI) Install(c *mux.APIContainer) {
-	fileServer := http.FileServer(&assetfs.AssetFS{
-		Asset:    swagger.Asset,
-		AssetDir: swagger.AssetDir,
-		Prefix:   "third_party/swagger-ui",
-	})
-	prefix := "/swagger-ui/"
-	c.NonSwaggerRoutes.Handle(prefix, http.StripPrefix(prefix, fileServer))
+	// OpenShift never exposes swagger-ui. Commenting this out to remove the
+	// bindata import to save space.
+	/*
+		fileServer := http.FileServer(&assetfs.AssetFS{
+			Asset:    swagger.Asset,
+			AssetDir: swagger.AssetDir,
+			Prefix:   "third_party/swagger-ui",
+		})
+		prefix := "/swagger-ui/"
+		c.NonSwaggerRoutes.Handle(prefix, http.StripPrefix(prefix, fileServer))
+	*/
 }
