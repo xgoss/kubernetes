@@ -35055,10 +35055,6 @@
    },
    "v1.FSGroupStrategyOptions": {
     "description": "FSGroupStrategyOptions defines the strategy type and options used to create the strategy.",
-    "required": [
-     "type",
-     "ranges"
-    ],
     "properties": {
      "ranges": {
       "description": "Ranges are the allowed ranges of fs groups.  If you would like to force a single fs group then supply a single range with the same start and end.",
@@ -35237,10 +35233,6 @@
    },
    "v1.IDRange": {
     "description": "IDRange provides a min/max of an allowed range of IDs.",
-    "required": [
-     "min",
-     "max"
-    ],
     "properties": {
      "max": {
       "description": "Max is the end of the range, inclusive.",
@@ -36712,12 +36704,6 @@
    },
    "v1.RunAsUserStrategyOptions": {
     "description": "RunAsUserStrategyOptions defines the strategy type and any options used to create the strategy.",
-    "required": [
-     "type",
-     "uid",
-     "uidRangeMin",
-     "uidRangeMax"
-    ],
     "properties": {
      "type": {
       "description": "Type is the strategy that will dictate what RunAsUser is used in the SecurityContext.",
@@ -36742,10 +36728,6 @@
    },
    "v1.SELinuxContextStrategyOptions": {
     "description": "SELinuxContextStrategyOptions defines the strategy type and any options used to create the strategy.",
-    "required": [
-     "type",
-     "seLinuxOptions"
-    ],
     "properties": {
      "seLinuxOptions": {
       "description": "seLinuxOptions required to run as; required for MustRunAs",
@@ -36914,7 +36896,6 @@
    "v1.SecurityContextConstraints": {
     "description": "SecurityContextConstraints governs the ability to make requests that affect the SecurityContext that will be applied to a container.",
     "required": [
-     "metadata",
      "priority",
      "allowPrivilegedContainer",
      "defaultAddCapabilities",
@@ -36926,14 +36907,7 @@
      "allowHostPorts",
      "allowHostPID",
      "allowHostIPC",
-     "seLinuxContext",
-     "runAsUser",
-     "supplementalGroups",
-     "fsGroup",
-     "readOnlyRootFilesystem",
-     "users",
-     "groups",
-     "seccompProfiles"
+     "readOnlyRootFilesystem"
     ],
     "properties": {
      "allowHostDirVolumePlugin": {
@@ -37043,7 +37017,6 @@
    "v1.SecurityContextConstraintsList": {
     "description": "SecurityContextConstraintsList is a list of SecurityContextConstraints objects",
     "required": [
-     "metadata",
      "items"
     ],
     "properties": {
@@ -37242,10 +37215,6 @@
    },
    "v1.SupplementalGroupsStrategyOptions": {
     "description": "SupplementalGroupsStrategyOptions defines the strategy type and options used to create the strategy.",
-    "required": [
-     "type",
-     "ranges"
-    ],
     "properties": {
      "ranges": {
       "description": "Ranges are the allowed ranges of supplemental groups.  If you would like to force a single supplemental group then supply a single range with the same start and end.",

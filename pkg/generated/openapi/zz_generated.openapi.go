@@ -8313,7 +8313,6 @@ var OpenAPIDefinitions *common.OpenAPIDefinitions = &common.OpenAPIDefinitions{
 						},
 					},
 				},
-				Required: []string{"type", "ranges"},
 			},
 		},
 		Dependencies: []string{
@@ -8788,7 +8787,6 @@ var OpenAPIDefinitions *common.OpenAPIDefinitions = &common.OpenAPIDefinitions{
 						},
 					},
 				},
-				Required: []string{"min", "max"},
 			},
 		},
 		Dependencies: []string{},
@@ -12355,7 +12353,6 @@ var OpenAPIDefinitions *common.OpenAPIDefinitions = &common.OpenAPIDefinitions{
 						},
 					},
 				},
-				Required: []string{"type", "uid", "uidRangeMin", "uidRangeMax"},
 			},
 		},
 		Dependencies: []string{},
@@ -12379,7 +12376,6 @@ var OpenAPIDefinitions *common.OpenAPIDefinitions = &common.OpenAPIDefinitions{
 						},
 					},
 				},
-				Required: []string{"type", "seLinuxOptions"},
 			},
 		},
 		Dependencies: []string{
@@ -12874,7 +12870,7 @@ var OpenAPIDefinitions *common.OpenAPIDefinitions = &common.OpenAPIDefinitions{
 						},
 					},
 				},
-				Required: []string{"metadata", "priority", "allowPrivilegedContainer", "defaultAddCapabilities", "requiredDropCapabilities", "allowedCapabilities", "allowHostDirVolumePlugin", "volumes", "allowHostNetwork", "allowHostPorts", "allowHostPID", "allowHostIPC", "seLinuxContext", "runAsUser", "supplementalGroups", "fsGroup", "readOnlyRootFilesystem", "users", "groups", "seccompProfiles"},
+				Required: []string{"priority", "allowPrivilegedContainer", "defaultAddCapabilities", "requiredDropCapabilities", "allowedCapabilities", "allowHostDirVolumePlugin", "volumes", "allowHostNetwork", "allowHostPorts", "allowHostPID", "allowHostIPC", "readOnlyRootFilesystem"},
 			},
 		},
 		Dependencies: []string{
@@ -12905,7 +12901,7 @@ var OpenAPIDefinitions *common.OpenAPIDefinitions = &common.OpenAPIDefinitions{
 						},
 					},
 				},
-				Required: []string{"metadata", "items"},
+				Required: []string{"items"},
 			},
 		},
 		Dependencies: []string{
@@ -13284,7 +13280,6 @@ var OpenAPIDefinitions *common.OpenAPIDefinitions = &common.OpenAPIDefinitions{
 						},
 					},
 				},
-				Required: []string{"type", "ranges"},
 			},
 		},
 		Dependencies: []string{
