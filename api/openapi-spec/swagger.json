@@ -35056,6 +35056,48 @@
      }
     }
    },
+   "v1.DeprecatedDownwardAPIVolumeFile": {
+    "description": "DeprecatedDownwardAPIVolumeFile represents information to create the file containing the pod field This type is deprecated and should be replaced by use of the downwardAPI volume source.",
+    "required": [
+     "name"
+    ],
+    "properties": {
+     "fieldRef": {
+      "description": "Required: Selects a field of the pod: only annotations, labels, name and namespace are supported.",
+      "$ref": "#/definitions/v1.ObjectFieldSelector"
+     },
+     "mode": {
+      "description": "Optional: mode bits to use on this file, must be a value between 0 and 0777. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.",
+      "type": "integer",
+      "format": "int32"
+     },
+     "name": {
+      "description": "Required: Name is the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'",
+      "type": "string"
+     },
+     "resourceFieldRef": {
+      "description": "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported.",
+      "$ref": "#/definitions/v1.ResourceFieldSelector"
+     }
+    }
+   },
+   "v1.DeprecatedDownwardAPIVolumeSource": {
+    "description": "DeprecatedDownwardAPIVolumeSource represents a volume containing downward API info. This type is deprecated and should be replaced by use of the downwardAPI volume source.",
+    "properties": {
+     "defaultMode": {
+      "description": "Optional: mode bits to use on created files by default. Must be a value between 0 and 0777. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.",
+      "type": "integer",
+      "format": "int32"
+     },
+     "items": {
+      "description": "Items is a list of downward API volume file",
+      "type": "array",
+      "items": {
+       "$ref": "#/definitions/v1.DeprecatedDownwardAPIVolumeFile"
+      }
+     }
+    }
+   },
    "v1.DownwardAPIVolumeFile": {
     "description": "DownwardAPIVolumeFile represents information to create the file containing the pod field",
     "required": [
@@ -35408,6 +35450,22 @@
      }
     }
    },
+   "v1.FSGroupStrategyOptions": {
+    "description": "FSGroupStrategyOptions defines the strategy type and options used to create the strategy.",
+    "properties": {
+     "ranges": {
+      "description": "Ranges are the allowed ranges of fs groups.  If you would like to force a single fs group then supply a single range with the same start and end.",
+      "type": "array",
+      "items": {
+       "$ref": "#/definitions/v1.IDRange"
+      }
+     },
+     "type": {
+      "description": "Type is the strategy that will dictate what FSGroup is used in the SecurityContext.",
+      "type": "string"
+     }
+    }
+   },
    "v1.FlexVolumeSource": {
     "description": "FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin. This is an alpha feature and may change in future.",
     "required": [
@@ -35515,26 +35573,6 @@
      "readOnly": {
       "description": "ReadOnly here will force the Glusterfs volume to be mounted with read-only permissions. Defaults to false. More info: http://releases.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-a-pod",
       "type": "boolean"
-     }
-    }
-   },
-   "v1.FSGroupStrategyOptions": {
-    "description": "FSGroupStrategyOptions defines the strategy type and options used to create the strategy.",
-    "required": [
-     "type",
-     "ranges"
-    ],
-    "properties": {
-     "ranges": {
-      "description": "Ranges are the allowed ranges of fs groups.  If you would like to force a single fs group then supply a single range with the same start and end.",
-      "type": "array",
-      "items": {
-       "$ref": "#/definitions/v1.IDRange"
-      }
-     },
-     "type": {
-      "description": "Type is the strategy that will dictate what FSGroup is used in the SecurityContext.",
-      "type": "string"
      }
     }
    },
@@ -35728,6 +35766,21 @@
      }
     }
    },
+   "v1.IDRange": {
+    "description": "IDRange provides a min/max of an allowed range of IDs.",
+    "properties": {
+     "max": {
+      "description": "Max is the end of the range, inclusive.",
+      "type": "integer",
+      "format": "int64"
+     },
+     "min": {
+      "description": "Min is the start of the range, inclusive.",
+      "type": "integer",
+      "format": "int64"
+     }
+    }
+   },
    "v1.ISCSIVolumeSource": {
     "description": "Represents an ISCSI disk. ISCSI volumes can only be mounted as read/write once. ISCSI volumes support ownership management and SELinux relabeling.",
     "required": [
@@ -35760,25 +35813,6 @@
      "targetPortal": {
       "description": "iSCSI target portal. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260).",
       "type": "string"
-     }
-    }
-   },
-   "v1.IDRange": {
-    "description": "IDRange provides a min/max of an allowed range of IDs.",
-    "required": [
-     "min",
-     "max"
-    ],
-    "properties": {
-     "max": {
-      "description": "Max is the end of the range, inclusive.",
-      "type": "integer",
-      "format": "int64"
-     },
-     "min": {
-      "description": "Min is the start of the range, inclusive.",
-      "type": "integer",
-      "format": "int64"
      }
     }
    },
@@ -37628,12 +37662,6 @@
    },
    "v1.RunAsUserStrategyOptions": {
     "description": "RunAsUserStrategyOptions defines the strategy type and any options used to create the strategy.",
-    "required": [
-     "type",
-     "uid",
-     "uidRangeMin",
-     "uidRangeMax"
-    ],
     "properties": {
      "type": {
       "description": "Type is the strategy that will dictate what RunAsUser is used in the SecurityContext.",
@@ -37658,10 +37686,6 @@
    },
    "v1.SELinuxContextStrategyOptions": {
     "description": "SELinuxContextStrategyOptions defines the strategy type and any options used to create the strategy.",
-    "required": [
-     "type",
-     "seLinuxOptions"
-    ],
     "properties": {
      "seLinuxOptions": {
       "description": "seLinuxOptions required to run as; required for MustRunAs",
@@ -37879,7 +37903,6 @@
    "v1.SecurityContextConstraints": {
     "description": "SecurityContextConstraints governs the ability to make requests that affect the SecurityContext that will be applied to a container.",
     "required": [
-     "metadata",
      "priority",
      "allowPrivilegedContainer",
      "defaultAddCapabilities",
@@ -37891,14 +37914,7 @@
      "allowHostPorts",
      "allowHostPID",
      "allowHostIPC",
-     "seLinuxContext",
-     "runAsUser",
-     "supplementalGroups",
-     "fsGroup",
-     "readOnlyRootFilesystem",
-     "users",
-     "groups",
-     "seccompProfiles"
+     "readOnlyRootFilesystem"
     ],
     "properties": {
      "allowHostDirVolumePlugin": {
@@ -37932,6 +37948,10 @@
        "type": "string"
       }
      },
+     "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources",
+      "type": "string"
+     },
      "defaultAddCapabilities": {
       "description": "DefaultAddCapabilities is the default set of capabilities that will be added to the container unless the pod spec specifically drops the capability.  You may not list a capabiility in both DefaultAddCapabilities and RequiredDropCapabilities.",
       "type": "array",
@@ -37949,6 +37969,10 @@
       "items": {
        "type": "string"
       }
+     },
+     "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#types-kinds",
+      "type": "string"
      },
      "metadata": {
       "description": "Standard object's metadata. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#metadata",
@@ -38008,16 +38032,23 @@
    "v1.SecurityContextConstraintsList": {
     "description": "SecurityContextConstraintsList is a list of SecurityContextConstraints objects",
     "required": [
-     "metadata",
      "items"
     ],
     "properties": {
+     "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources",
+      "type": "string"
+     },
      "items": {
       "description": "List of security context constraints.",
       "type": "array",
       "items": {
        "$ref": "#/definitions/v1.SecurityContextConstraints"
       }
+     },
+     "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#types-kinds",
+      "type": "string"
      },
      "metadata": {
       "description": "More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#metadata",
@@ -38239,10 +38270,6 @@
    },
    "v1.SupplementalGroupsStrategyOptions": {
     "description": "SupplementalGroupsStrategyOptions defines the strategy type and options used to create the strategy.",
-    "required": [
-     "type",
-     "ranges"
-    ],
     "properties": {
      "ranges": {
       "description": "Ranges are the allowed ranges of supplemental groups.  If you would like to force a single supplemental group then supply a single range with the same start and end.",
@@ -38338,6 +38365,10 @@
      "iscsi": {
       "description": "ISCSI represents an ISCSI Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: http://releases.k8s.io/HEAD/examples/volumes/iscsi/README.md",
       "$ref": "#/definitions/v1.ISCSIVolumeSource"
+     },
+     "metadata": {
+      "description": "Metadata represents metadata about the pod that should populate this volume Deprecated: Use downwardAPI instead.",
+      "$ref": "#/definitions/v1.DeprecatedDownwardAPIVolumeSource"
      },
      "name": {
       "description": "Volume's name. Must be a DNS_LABEL and unique within the pod. More info: http://kubernetes.io/docs/user-guide/identifiers#names",
