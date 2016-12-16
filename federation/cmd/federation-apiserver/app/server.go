@@ -192,9 +192,9 @@ func Run(s *options.ServerRunOptions) error {
 	genericConfig.Authorizer = apiAuthorizer
 	genericConfig.AdmissionControl = admissionController
 	genericConfig.APIResourceConfigSource = storageFactory.APIResourceConfigSource
-	genericConfig.OpenAPIConfig.Definitions = openapi.OpenAPIDefinitions
-	genericConfig.EnableOpenAPISupport = true
+	genericConfig.OpenAPIConfig = genericapiserver.DefaultOpenAPIConfig(openapi.OpenAPIDefinitions)
 	genericConfig.OpenAPIConfig.SecurityDefinitions = securityDefinitions
+	genericConfig.SwaggerConfig = genericapiserver.DefaultSwaggerConfig()
 
 	// TODO: Move this to generic api server (Need to move the command line flag).
 	if s.GenericServerRunOptions.EnableWatchCache {
