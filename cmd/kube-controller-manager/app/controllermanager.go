@@ -122,7 +122,9 @@ func Run(s *options.CMServer) error {
 		return err
 	}
 
-	go startHTTP(s)
+	if s.Port >= 0 {
+		go startHTTP(s)
+	}
 
 	recorder := createRecorder(kubeClient)
 
@@ -156,8 +158,12 @@ func Run(s *options.CMServer) error {
 			glog.Fatalf("error starting controllers: %v", err)
 		}
 
-		ctx.InformerFactory.Start(ctx.Stop)
-		close(ctx.InformersStarted)
+		if StartInformers == nil {
+			ctx.InformerFactory.Start(ctx.Stop)
+			close(ctx.InformersStarted)
+		} else {
+			StartInformers(ctx.Stop)
+		}
 
 		select {}
 	}
@@ -416,10 +422,10 @@ func GetAvailableResources(clientBuilder controller.ControllerClientBuilder) (ma
 	return allResources, nil
 }
 
-// CreateControllerContext creates a context struct containing references to resources needed by the
+// createControllerContext creates a context struct containing references to resources needed by the
 // controllers such as the cloud provider and clientBuilder. rootClientBuilder is only used for
 // the shared-informers client and token controller.
-func CreateControllerContext(s *options.CMServer, rootClientBuilder, clientBuilder controller.ControllerClientBuilder, stop <-chan struct{}) (ControllerContext, error) {
+func createControllerContext(s *options.CMServer, rootClientBuilder, clientBuilder controller.ControllerClientBuilder, stop <-chan struct{}) (ControllerContext, error) {
 	versionedClient := rootClientBuilder.ClientOrDie("shared-informers")
 	sharedInformers := informers.NewSharedInformerFactory(versionedClient, ResyncPeriod(s)())
 
